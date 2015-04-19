@@ -61,4 +61,9 @@ public class Vector {
     public static Vector sum(Vector v1, Vector v2) {
         return new Vector(v1).add(v2);
     }
+
+    public static Vector scaled(Vector v, double factor) {
+        return new Vector(v).scale(factor);
+    }
+
 }

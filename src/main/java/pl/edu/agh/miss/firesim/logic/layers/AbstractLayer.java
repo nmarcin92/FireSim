@@ -2,6 +2,7 @@ package pl.edu.agh.miss.firesim.logic.layers;
 
 import com.google.common.collect.*;
 import pl.edu.agh.miss.firesim.enums.Direction;
+import pl.edu.agh.miss.firesim.logic.LayerContainer;
 
 /**
  * @author mnowak
@@ -26,6 +27,19 @@ public abstract class AbstractLayer<T extends AbstractField> {
 
         setFieldsNeighbours();
 
+    }
+
+
+    public void propagateFields(LayerContainer layerContainer) {
+        for (Table.Cell<Integer, Integer, T> cell : layer.cellSet()) {
+            cell.getValue().propagate(layerContainer);
+        }
+    }
+
+    public void updateFields() {
+        for (Table.Cell<Integer, Integer, T> cell : layer.cellSet()) {
+            cell.getValue().update();
+        }
     }
 
     protected Table<Integer, Integer, T> getLayerTable() {

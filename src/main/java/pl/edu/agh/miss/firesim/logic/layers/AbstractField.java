@@ -1,8 +1,9 @@
 package pl.edu.agh.miss.firesim.logic.layers;
 
+import com.google.common.collect.Maps;
 import pl.edu.agh.miss.firesim.enums.Direction;
+import pl.edu.agh.miss.firesim.logic.LayerContainer;
 
-import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
@@ -12,7 +13,7 @@ import java.util.Queue;
  */
 public abstract class AbstractField<T extends AbstractAction> {
 
-    private final Map<Direction, AbstractField> neighbours = new EnumMap<>(Direction.class);
+    private final Map<Direction, AbstractField> neighbours = Maps.newEnumMap(Direction.class);
     private final Queue<T> futureActions = new LinkedList<>();
 
     public AbstractField getNeighbour(Direction dir) {
@@ -37,5 +38,7 @@ public abstract class AbstractField<T extends AbstractAction> {
         processFutureActions();
         futureActions.clear();
     }
+
+    public abstract void propagate(LayerContainer layerContainer);
 
 }

@@ -17,4 +17,5 @@ public class WindLayer extends AbstractLayer<WindField> {
     protected WindField createEmptyField() {
         return new WindField();
     }
+
 }
