@@ -1,35 +1,41 @@
 package pl.edu.agh.miss.firesim.utils;
 
+import pl.edu.agh.miss.firesim.AppConstants;
 import pl.edu.agh.miss.firesim.enums.Direction;
 
 /**
  * @author mnowak
  */
 public class DirectionBounds {
-    private final Direction siteDirection;
-    private final Direction mainDirection;
+	private final Direction siteDirection;
+	private final Direction mainDirection;
 
-    public static DirectionBounds ofVector(Vector vector) {
-        boolean isHorizontal = Math.abs(vector.getX()) >= Math.abs(vector.getY());
-        boolean isPositiveMain = isHorizontal ? vector.getY() >= 0 : vector.getX() >= 0;
-        boolean isPositiveSite = isHorizontal ? vector.getX() >= 0 : vector.getY() >= 0;
+	public static DirectionBounds ofVector(Vector vector) {
 
-        Direction main = Direction.getByParams(isHorizontal, isPositiveMain);
-        Direction site = Direction.getByParams(!isHorizontal, isPositiveSite);
+		double sa = Utils.signum(vector.getX()), sb = Utils.signum(vector.getY());
 
-        return new DirectionBounds(main, site);
-    }
+		Direction main, site;
+		if (Math.abs(vector.getX()) >= Math.abs(vector.getY())) {
+			main = Direction.getByNormal(sa, 0);
+			site = Direction.getByNormal(sa * AppConstants.ONE_OVER_SQRT_2, sb * AppConstants.ONE_OVER_SQRT_2);
+		} else {
+			main = Direction.getByNormal(0, sb);
+			site = Direction.getByNormal(sa * AppConstants.ONE_OVER_SQRT_2, sb * AppConstants.ONE_OVER_SQRT_2);
+		}
 
-    private DirectionBounds(Direction main, Direction site) {
-        this.mainDirection = main;
-        this.siteDirection = site;
-    }
+		return new DirectionBounds(main, site);
+	}
 
-    public Direction getSiteDirection() {
-        return siteDirection;
-    }
+	private DirectionBounds(Direction main, Direction site) {
+		this.mainDirection = main;
+		this.siteDirection = site;
+	}
 
-    public Direction getMainDirection() {
-        return mainDirection;
-    }
+	public Direction getSiteDirection() {
+		return siteDirection;
+	}
+
+	public Direction getMainDirection() {
+		return mainDirection;
+	}
 }
