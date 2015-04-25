@@ -1,5 +1,6 @@
 package pl.edu.agh.miss.firesim.logic.layers.humidity;
 
+import pl.edu.agh.miss.firesim.logic.LayerProcessor.DynamicState;
 import pl.edu.agh.miss.firesim.logic.layers.AbstractLayer;
 
 /**
@@ -7,12 +8,12 @@ import pl.edu.agh.miss.firesim.logic.layers.AbstractLayer;
  */
 public class HumidityLayer extends AbstractLayer<HumidityField> {
 
-    public HumidityLayer(int sizeX, int sizeY) {
-        super(sizeX, sizeY);
+    public HumidityLayer(int sizeX, int sizeY, DynamicState simulationState) {
+        super(sizeX, sizeY, simulationState);
     }
 
     @Override
-    protected HumidityField createEmptyField() {
-        return null;
+    protected HumidityField createEmptyField(Integer row, Integer col) {
+        return new HumidityField(getSimulationState());
     }
 }

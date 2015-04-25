@@ -37,6 +37,10 @@ public class Vector {
         this.y = y;
     }
 
+    public double getLength() {
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    }
+
     public Vector setZero() {
         x = y = 0;
         return this;

@@ -3,6 +3,7 @@ package pl.edu.agh.miss.firesim.logic.layers;
 import com.google.common.collect.*;
 import pl.edu.agh.miss.firesim.enums.Direction;
 import pl.edu.agh.miss.firesim.logic.LayerContainer;
+import pl.edu.agh.miss.firesim.logic.LayerProcessor.DynamicState;
 
 /**
  * @author mnowak
@@ -11,24 +12,24 @@ public abstract class AbstractLayer<T extends AbstractField> {
 
     private final int sizeX, sizeY;
     private final Table<Integer, Integer, T> layer;
+    private final DynamicState simulationState;
 
-    public AbstractLayer(int sizeX, int sizeY) {
+    public AbstractLayer(int sizeX, int sizeY, DynamicState simulationState) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
-
+        this.simulationState = simulationState;
         layer = ArrayTable.create(ContiguousSet.create(Range.closed(0, sizeX), DiscreteDomain.integers()).asList(),
                 ContiguousSet.create(Range.closed(0, sizeY), DiscreteDomain.integers()).asList());
 
         for (Integer row : layer.rowKeySet()) {
             for (Integer col : layer.columnKeySet()) {
-                layer.put(row, col, createEmptyField());
+                layer.put(row, col, createEmptyField(row, col));
             }
         }
 
         setFieldsNeighbours();
 
     }
-
 
     public void propagateFields(LayerContainer layerContainer) {
         for (Table.Cell<Integer, Integer, T> cell : layer.cellSet()) {
@@ -42,7 +43,7 @@ public abstract class AbstractLayer<T extends AbstractField> {
         }
     }
 
-    protected Table<Integer, Integer, T> getLayerTable() {
+    public Table<Integer, Integer, T> getLayerTable() {
         return layer;
     }
 
@@ -61,7 +62,19 @@ public abstract class AbstractLayer<T extends AbstractField> {
         }
     }
 
-    protected abstract T createEmptyField();
+    protected int getSizeX() {
+        return sizeX;
+    }
+
+    protected int getSizeY() {
+        return sizeY;
+    }
+
+    protected DynamicState getSimulationState() {
+        return simulationState;
+    }
+
+    protected abstract T createEmptyField(Integer row, Integer col);
 
 
 }

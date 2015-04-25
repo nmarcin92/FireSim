@@ -5,7 +5,7 @@ package pl.edu.agh.miss.firesim.enums;
  */
 public enum Direction {
 
-    NORTH(false, true), SOUTH(false, false), WEST(true, false), EAST(true, true);
+    NORTH(false, false), SOUTH(false, true), WEST(true, false), EAST(true, true);
 
     private final boolean isHorizontal;
     private final boolean isPositive;

@@ -10,12 +10,12 @@ public class DirectionBounds {
     private final Direction mainDirection;
 
     public static DirectionBounds ofVector(Vector vector) {
-        boolean isHorizontal = Math.abs(vector.getY()) >= Math.abs(vector.getX());
+        boolean isHorizontal = Math.abs(vector.getX()) >= Math.abs(vector.getY());
         boolean isPositiveMain = isHorizontal ? vector.getY() >= 0 : vector.getX() >= 0;
         boolean isPositiveSite = isHorizontal ? vector.getX() >= 0 : vector.getY() >= 0;
 
         Direction main = Direction.getByParams(isHorizontal, isPositiveMain);
-        Direction site = Direction.getByParams(isHorizontal, isPositiveSite);
+        Direction site = Direction.getByParams(!isHorizontal, isPositiveSite);
 
         return new DirectionBounds(main, site);
     }
