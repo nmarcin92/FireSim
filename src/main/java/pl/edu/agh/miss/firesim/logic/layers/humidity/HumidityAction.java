@@ -8,12 +8,18 @@ import pl.edu.agh.miss.firesim.logic.layers.AbstractAction;
 public class HumidityAction extends AbstractAction {
 
     private final int delta;
+    private final double factor;
 
-    public HumidityAction(int delta) {
+    public HumidityAction(int delta, double factor) {
         this.delta = delta;
+        this.factor = factor;
     }
 
     public int getDelta() {
         return delta;
+    }
+
+    public double getFactor() {
+        return factor;
     }
 }

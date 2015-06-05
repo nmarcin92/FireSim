@@ -12,12 +12,12 @@ public class WindGeneratorField extends WindField {
 
     private int di = 0;
 
-    public WindGeneratorField(DynamicState simulationState) {
-        super(simulationState);
+    public WindGeneratorField(int y, int x, DynamicState simulationState) {
+        super(y, x, simulationState);
     }
 
     @Override
-    protected void processFutureActions() {
+    protected void processFutureActions(LayerContainer layerContainer) {
 
     }
 

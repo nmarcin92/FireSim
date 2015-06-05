@@ -17,9 +17,9 @@ public class WindLayer extends AbstractLayer<WindField> {
     @Override
     protected WindField createEmptyField(Integer row, Integer col) {
         if (row == 0 || row == getSizeY() - 1 || col == 0 || col == getSizeX() - 1) {
-            return new WindGeneratorField(getSimulationState());
+            return new WindGeneratorField(col, row, getSimulationState());
         }
-        return new WindField(getSimulationState());
+        return new WindField(col, row, getSimulationState());
     }
 
 

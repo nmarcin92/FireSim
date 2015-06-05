@@ -19,6 +19,7 @@ public class MeshCanvas extends Canvas {
         this.sizeY = sizeY;
         colorTable = ArrayTable.create(ContiguousSet.create(Range.closed(0, sizeX), DiscreteDomain.integers()).asList(),
                 ContiguousSet.create(Range.closed(0, sizeY), DiscreteDomain.integers()).asList());
+
     }
 
     public Table<Integer, Integer, Color> getColorTable() {
@@ -36,14 +37,13 @@ public class MeshCanvas extends Canvas {
         offsetX = Math.round(0.05f * dx);
         offsetY = Math.round(0.05f * dy);
 
+        g2d.setColor(Color.BLACK);
         for (int x = 0; x < sizeX + 1; ++x) {
-            g2d.setColor(Color.BLACK);
-            g2d.drawLine(x * dx, 0, x * dx, getHeight());
+            g2d.drawLine(x * dx + offsetX, offsetY, x * dx, getHeight());
         }
 
         for (int y = 0; y < sizeY + 1; ++y) {
-            g2d.setColor(Color.BLACK);
-            g2d.drawLine(0, y * dy, getWidth(), y * dy);
+            g2d.drawLine(offsetX, y * dy + offsetY, getWidth(), y * dy);
         }
 
     }
@@ -60,6 +60,17 @@ public class MeshCanvas extends Canvas {
                     cell.getRowKey() * dy + offsetY,
                     dx - 2 * offsetX, dy - 2 * offsetY);
         }
+
+        g2d.setColor(Color.BLACK);
+        for (Integer col : colorTable.columnKeySet()) {
+            g2d.fillRect(col * dx + offsetX, offsetY, dx - 2 * offsetX, dy - 2 * offsetY);
+            g2d.fillRect(col * dx + offsetX, (sizeY - 1) * dy + offsetY, dx - 2 * offsetX, dy - 2 * offsetY);
+        }
+        for (Integer row : colorTable.rowKeySet()) {
+            g2d.fillRect(offsetX, row * dy + offsetY, dx - 2 * offsetX, dy - 2 * offsetY);
+            g2d.fillRect((sizeX - 1) * dx + offsetX, row * dy + offsetY, dx - 2 * offsetX, dy - 2 * offsetY);
+        }
+
 
         getBufferStrategy().show();
     }

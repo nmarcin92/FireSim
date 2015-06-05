@@ -16,13 +16,16 @@ import java.util.TreeMap;
 public class LayerContainer {
 
     private SortedMap<LayerType, AbstractLayer> layers;
+    private final int sizeX, sizeY;
 
-    private LayerContainer() {
+    private LayerContainer(int sizeX, int sizeY) {
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
         layers = new TreeMap<>((o1, o2) -> o1.getOrder().compareTo(o2.getOrder()));
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public static Builder builder(int sizeX, int sizeY) {
+        return new Builder(sizeX, sizeY);
     }
 
     public WindLayer getWindLayer() {
@@ -44,8 +47,8 @@ public class LayerContainer {
     public static class Builder {
         private LayerContainer container;
 
-        private Builder() {
-            container = new LayerContainer();
+        private Builder(int sizeX, int sizeY) {
+            container = new LayerContainer(sizeX, sizeY);
         }
 
         public Builder addLayer(LayerType type, AbstractLayer layer) {
@@ -56,5 +59,13 @@ public class LayerContainer {
         public LayerContainer build() {
             return container;
         }
+    }
+
+    public int getSizeX() {
+        return sizeX;
+    }
+
+    public int getSizeY() {
+        return sizeY;
     }
 }

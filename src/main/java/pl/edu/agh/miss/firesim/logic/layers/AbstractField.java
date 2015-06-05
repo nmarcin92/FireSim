@@ -17,8 +17,11 @@ public abstract class AbstractField<T extends AbstractAction> {
     private final Map<Direction, AbstractField> neighbours = Maps.newEnumMap(Direction.class);
     private final Queue<T> futureActions = new LinkedList<>();
     private final DynamicState simulationState;
+    private final int x, y;
 
-    public AbstractField(DynamicState simulationState) {
+    public AbstractField(int x, int y, DynamicState simulationState) {
+        this.x = x;
+        this.y = y;
         this.simulationState = simulationState;
     }
 
@@ -34,14 +37,22 @@ public abstract class AbstractField<T extends AbstractAction> {
         futureActions.add(action);
     }
 
-    protected Queue<T> getFutureActions() {
+    public Queue<T> getFutureActions() {
         return futureActions;
     }
 
-    protected abstract void processFutureActions();
+    public int getColumnKey() {
+        return x;
+    }
 
-    public void update() {
-        processFutureActions();
+    public int getRowKey() {
+        return y;
+    }
+
+    protected abstract void processFutureActions(LayerContainer layerContainer);
+
+    public void update(LayerContainer layerContainer) {
+        processFutureActions(layerContainer);
         futureActions.clear();
     }
 

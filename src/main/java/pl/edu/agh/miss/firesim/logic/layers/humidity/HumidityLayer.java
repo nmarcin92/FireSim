@@ -8,12 +8,14 @@ import pl.edu.agh.miss.firesim.logic.layers.AbstractLayer;
  */
 public class HumidityLayer extends AbstractLayer<HumidityField> {
 
+    public static final int MAX_HUMIDITY = 100;
+
     public HumidityLayer(int sizeX, int sizeY, DynamicState simulationState) {
         super(sizeX, sizeY, simulationState);
     }
 
     @Override
     protected HumidityField createEmptyField(Integer row, Integer col) {
-        return new HumidityField(getSimulationState());
+        return new HumidityField(col, row, getSimulationState());
     }
 }

@@ -28,7 +28,7 @@ public class LayerProcessor {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         simulationState = new DynamicState();
-        layerContainer = LayerContainer.builder()
+        layerContainer = LayerContainer.builder(sizeX, sizeY)
                 .addLayer(LayerType.WIND, new WindLayer(sizeX, sizeY, simulationState))
                 .addLayer(LayerType.HUMIDITY, new HumidityLayer(sizeX, sizeY, simulationState))
                 .addLayer(LayerType.GROUND, new GroundLayer(sizeX, sizeY, simulationState))
@@ -41,7 +41,7 @@ public class LayerProcessor {
         }
 
         for (AbstractLayer layer : layerContainer.getLayersOrdered()) {
-            layer.updateFields();
+            layer.updateFields(layerContainer);
         }
 
         simulationState.updateRegistered();
@@ -65,12 +65,20 @@ public class LayerProcessor {
         public DynamicState() {
             // set default values
             setValue(StateParameter.AIR_HUMIDITY, AppConstants.INITIAL_AIR_HUMIDITY);
+            setValue(StateParameter.WATER_HUMIDITY, AppConstants.INITIAL_WATER_HUMIDITY);
             setValue(StateParameter.SIMULATION_SPEED, AppConstants.INITIAL_SIMULATION_SPEED);
             setValue(StateParameter.WIND_RANDOMNESS, AppConstants.INITIAL_WIND_RANDOMNESS);
             setValue(StateParameter.WIND_RANDOMNESS, AppConstants.INITIAL_WIND_RANDOMNESS);
             setValue(StateParameter.WIND_SINUSOIDAL_FREQ, AppConstants.INITIAL_WIND_SIN_FREQ);
             setValue(StateParameter.WIND_DIRECTION, AppConstants.INITIAL_WIND_DIRECTION);
             setValue(StateParameter.WIND_TYPE, AppConstants.INITIAL_WIND_TYPE);
+            setValue(StateParameter.HUMIDITY_CONVERGENCE_FACTOR, AppConstants.INITIAL_HUMIDITY_CONVERGENCE);
+            setValue(StateParameter.BURNING_HUMIDITY_DESCENT, AppConstants.INITIAL_BURNING_DESCENT);
+            setValue(StateParameter.DENSITY_DESCENT, AppConstants.INITIAL_DENSITY_DESCENT);
+            setValue(StateParameter.SHOW_GROUND_LAYER, Boolean.TRUE);
+            setValue(StateParameter.SHOW_HUMIDITY_LAYER, Boolean.TRUE);
+            setValue(StateParameter.SHOW_WIND_LAYER, Boolean.TRUE);
+
         }
 
         @SuppressWarnings("unchecked")
@@ -104,6 +112,7 @@ public class LayerProcessor {
             registeredChanges.put(param, value);
             registeredLock.unlock();
         }
+
     }
 
     public static enum StateParameter {
@@ -112,7 +121,14 @@ public class LayerProcessor {
         WIND_TYPE(WindType.class),
         WIND_SINUSOIDAL_FREQ(Float.class),
         WIND_RANDOMNESS(Float.class),
-        SIMULATION_SPEED(Long.class);
+        SIMULATION_SPEED(Integer.class),
+        HUMIDITY_CONVERGENCE_FACTOR(Float.class),
+        BURNING_HUMIDITY_DESCENT(Float.class),
+        WATER_HUMIDITY(Integer.class),
+        DENSITY_DESCENT(Integer.class),
+        SHOW_GROUND_LAYER(Boolean.class),
+        SHOW_WIND_LAYER(Boolean.class),
+        SHOW_HUMIDITY_LAYER(Boolean.class);
 
         private final Class valueClass;
 
